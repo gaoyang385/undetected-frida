@@ -136,6 +136,8 @@ jobs:
         compr="xz ${XZ_OPT}:xz"
 
         pushd frida
+        zip -9qr "/frida.zip" *
+        gh_release_put "/frida.zip" "frida-${FRIDA_VERSION}.zip"
         gh_release_put subprojects/frida-core/src/anti-anti-frida.py anti-anti-frida.py ||:
 
         for j in server inject; do  # bin
@@ -250,9 +252,6 @@ jobs:
         pushd "${MAGISK_DIR}"
         zip -9qr "${OLDPWD}/magisk.zip" *
         gh_release_put "${OLDPWD}/magisk.zip" "${GITHUB_REPOSITORY##*/}-magisk-${FRIDA_VERSION}.zip"
-        pushd frida
-        zip -9qr "${OLDPWD}/frida.zip" *
-        gh_release_put "${OLDPWD}/frida.zip" "${GITHUB_REPOSITORY##*/}-frida-${FRIDA_VERSION}.zip"
         popd
 
         echo '{"draft":false}' | curl -fs -H "Authorization: token ${GITHUB_TOKEN}" -H "Content-Type: application/json" -d@- -o /dev/null -XPATCH "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${{ needs.create.outputs.RELEASE_ID }}"
