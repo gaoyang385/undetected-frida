@@ -137,7 +137,7 @@ jobs:
 
         pushd frida
         zip -9qr "./frida.zip" *
-        gh_release_put "/frida.zip" "frida-${FRIDA_VERSION}.zip"
+        gh_release_put "./frida.zip" "frida-${FRIDA_VERSION}.zip"
         gh_release_put subprojects/frida-core/src/anti-anti-frida.py anti-anti-frida.py ||:
 
         for j in server inject; do  # bin
